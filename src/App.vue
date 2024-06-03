@@ -3,15 +3,20 @@ import { onMounted } from "vue";
 import { useTodoStore } from "@/store";
 import { AppTodoList } from "@/components";
 import { storeToRefs } from "pinia";
+import { useLoading } from "./composables";
 
 const todoStore = useTodoStore();
+
+const { isLoading, withLoadingDecorator } = useLoading();
 
 const { searchTitle } = storeToRefs(todoStore);
 
 const { getTodoList, createTodo } = todoStore;
 
+const getTodoListWithLoading = withLoadingDecorator(getTodoList);
+
 onMounted(() => {
-  getTodoList();
+  getTodoListWithLoading();
 });
 </script>
 
@@ -29,8 +34,9 @@ onMounted(() => {
   >
     createTodo
   </button>
+  <span>{{ isLoading }}</span>
 
-  <app-todo-list />
+  <app-todo-list v-if="!isLoading" />
 </template>
 
 <style scoped lang="scss"></style>

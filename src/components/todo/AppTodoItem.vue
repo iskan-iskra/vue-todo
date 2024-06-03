@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useLoading } from "@/composables";
-import { dateFormatter } from "@/tools";
+import { computeOverdue, dateFormatter } from "@/tools";
 import { computed, toRefs } from "vue";
 
 const props = defineProps<{
@@ -14,9 +14,9 @@ const props = defineProps<{
 const { title, completed, dueDate, deleteTodo, updateCompleted } =
   toRefs(props);
 
-const isOverdue = computed<boolean>(() => {
-  return !completed.value && new Date(dueDate.value) < new Date();
-});
+const isOverdue = computed<boolean>(() =>
+  computeOverdue(completed.value, new Date(dueDate.value))
+);
 
 const { isLoading, withLoadingDecorator } = useLoading();
 
