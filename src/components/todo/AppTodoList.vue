@@ -11,7 +11,7 @@ const { deleteTodo, updateTodo } = todoStore;
 </script>
 
 <template>
-  <div class="test2">
+  <div class="app-todo-list">
     <app-todo-item
       v-for="{ id, title, completed, dueDate } in todoList"
       :key="id"
@@ -25,9 +25,9 @@ const { deleteTodo, updateTodo } = todoStore;
 </template>
 
 <style scoped lang="scss">
-.test2 {
+.app-todo-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 </style>

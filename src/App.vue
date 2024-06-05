@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useTodoStore } from "@/store";
-import { AppTodoList } from "@/components";
+import { AppTodoList, AppTodoModal } from "@/components";
 import { storeToRefs } from "pinia";
-import { useLoading } from "./composables";
+import { useLoading } from "@/composables";
+import { AppInput, AppButton } from "@/ui-lib";
 
 const todoStore = useTodoStore();
 
@@ -11,9 +12,14 @@ const { isLoading, withLoadingDecorator } = useLoading();
 
 const { searchTitle } = storeToRefs(todoStore);
 
-const { getTodoList, createTodo } = todoStore;
+const { getTodoList } = todoStore;
 
 const getTodoListWithLoading = withLoadingDecorator(getTodoList);
+
+const isModal = ref<boolean>();
+const setModal = (flag: boolean) => {
+  isModal.value = flag;
+};
 
 onMounted(() => {
   getTodoListWithLoading();
@@ -21,22 +27,32 @@ onMounted(() => {
 </script>
 
 <template>
-  <input type="text" v-model="searchTitle" />
-  <button
-    @click="
-      createTodo({
-        title: 'test title',
-        description: 'test description',
-        dueDate: new Date(new Date().setHours(+10)).toISOString(),
-        completed: false,
-      })
-    "
-  >
-    createTodo
-  </button>
-  <span>{{ isLoading }}</span>
-
-  <app-todo-list v-if="!isLoading" />
+  <header>
+    <app-input v-model="searchTitle" class="search" placeholder="ПОИСК" />
+    <app-button @click="setModal(true)">добавить задачу</app-button>
+  </header>
+  <main>
+    <app-todo-list v-if="!isLoading" />
+  </main>
+  <AppTodoModal :modal-state="isModal" @close-modal="setModal(false)" />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .search {
+    width: 50%;
+    min-width: 200px;
+    max-width: 400px;
+  }
+}
+
+main {
+  margin-top: 18px;
+}
+</style>

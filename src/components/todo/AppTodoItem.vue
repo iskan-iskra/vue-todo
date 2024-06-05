@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { useLoading } from "@/composables";
 import { computeOverdue, dateFormatter } from "@/tools";
-import { computed, toRefs } from "vue";
+import { AppButton, AppCheckbox, AppCard } from "@/ui-lib";
+import { computed, ref, toRefs } from "vue";
+import AppTodoModal from "./AppTodoModal.vue";
+import { TiAppTodoItem } from "@/types";
 
-const props = defineProps<{
-  title: string;
-  completed: boolean;
-  dueDate: string;
-  updateCompleted: () => Promise<void>;
-  deleteTodo: () => Promise<void>;
-}>();
+const props = defineProps<TiAppTodoItem>();
 
 const { title, completed, dueDate, deleteTodo, updateCompleted } =
   toRefs(props);
@@ -27,36 +24,77 @@ const updateTodoWithLoading = computed(() =>
 const deleteTodoWithLoading = computed(() =>
   withLoadingDecorator(deleteTodo.value)
 );
+
+const isModal = ref<boolean>();
+const setModal = (flag: boolean) => {
+  isModal.value = flag;
+};
 </script>
 
 <template>
-  <div class="test" :class="{ isOverdue: isOverdue }">
-    <input
-      type="checkbox"
-      :checked="completed"
-      :value="completed"
-      :disabled="isLoading"
-      @click="updateTodoWithLoading"
-    />
-    <div>
-      <span>title: </span><span>{{ title }}</span>
+  <app-card :type="isOverdue ? 'error' : 'default'">
+    <div class="app-todo-item">
+      <app-checkbox
+        :checked="completed"
+        :disabled="isLoading"
+        @click="updateTodoWithLoading"
+      />
+      <div class="app-todo-item__info">
+        <div class="app-todo-item__title" :class="{ completed }">
+          {{ title }}
+        </div>
+        <div class="app-todo-item__date">
+          {{ dateFormatter(new Date(dueDate)) }}
+        </div>
+      </div>
+      <div class="app-todo-item__btn-wrapper">
+        <app-button :disabled="isLoading" @click="deleteTodoWithLoading">
+          удалить
+        </app-button>
+        <app-button :disabled="isLoading" @click="setModal(true)">
+          редактировать
+        </app-button>
+      </div>
     </div>
-    <div>
-      <span>deadline:</span><span>{{ dateFormatter(new Date(dueDate)) }}</span>
-    </div>
-    <button @click="deleteTodoWithLoading" :disabled="isLoading">delete</button>
-  </div>
+  </app-card>
+
+  <app-todo-modal :modal-state="isModal" @close-modal="setModal(false)" />
 </template>
 
 <style scoped lang="scss">
-.test {
-  border: 1px solid black;
+.app-todo-item {
   display: flex;
-  flex-direction: row;
-  gap: 16px;
+  gap: 10px;
   align-items: center;
-}
-.isOverdue {
-  background-color: red;
+
+  &__info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 27px;
+
+    &.completed {
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+  }
+
+  &__date {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &__btn-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 }
 </style>

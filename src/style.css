@@ -1,4 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
 * {
   box-sizing: border-box;
   outline: none;
+  font-family: "Manrope";
+}
+
+body {
+  position: relative;
+  padding: 53px 24px;
+  margin: 0;
+}
+
+:root {
+  --color-primary: #5451ff;
+  --color-white: #fff;
+  --color-disabled: gray;
+  --color-error: #ff7474;
+  --color-border: #9b9b9b;
+  --color-dark-gray: #1b1b1b;
+  --color-light-gray: #f1f1f1;
+  --color-fade: rgba(0, 0, 0, 0.5);
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.3s;
+}
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
 }
