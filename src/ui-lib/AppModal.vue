@@ -4,21 +4,19 @@ const emit = defineEmits(["click-outside"]);
 
 <template>
   <Teleport to="body">
-    <transition name="modal-fade">
-      <div class="app-modal__wrapper" @click="emit('click-outside')">
-        <div class="app-modal__container" @click.stop>
-          <div class="app-modal__header">
-            <slot name="header"></slot>
-          </div>
-          <div class="app-modal__body">
-            <slot name="body"></slot>
-          </div>
-          <div class="app-modal__footer">
-            <slot name="footer"></slot>
-          </div>
+    <div class="app-modal__wrapper" @click="emit('click-outside')">
+      <div class="app-modal__container" @click.stop>
+        <div class="app-modal__header">
+          <slot name="header"></slot>
+        </div>
+        <div class="app-modal__body">
+          <slot name="body"></slot>
+        </div>
+        <div class="app-modal__footer">
+          <slot name="footer"></slot>
         </div>
       </div>
-    </transition>
+    </div>
   </Teleport>
 </template>
 

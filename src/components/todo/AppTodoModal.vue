@@ -115,7 +115,6 @@ onBeforeUnmount(() => {
           class="app-todo-modal__input"
           title="ОПИСАНИЕ"
         />
-        <pre>{{ modalData.dueDate }}</pre>
         <app-input
           v-model="modalData.dueDate"
           type="date"
