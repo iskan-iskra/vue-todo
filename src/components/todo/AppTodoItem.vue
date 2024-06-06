@@ -4,11 +4,12 @@ import { computeOverdue, dateFormatter } from "@/tools";
 import { AppButton, AppCheckbox, AppCard } from "@/ui-lib";
 import { computed, ref, toRefs } from "vue";
 import AppTodoModal from "./AppTodoModal.vue";
+import AppModalDelete from "./AppModalDelete.vue";
 import { TiAppTodoItem } from "@/types";
 
 const props = defineProps<TiAppTodoItem>();
 
-const { title, completed, dueDate, deleteTodo, updateCompleted } =
+const { id, title, completed, dueDate, deleteTodo, updateCompleted } =
   toRefs(props);
 
 const isOverdue = computed<boolean>(() =>
@@ -25,9 +26,14 @@ const deleteTodoWithLoading = computed(() =>
   withLoadingDecorator(deleteTodo.value)
 );
 
-const isModal = ref<boolean>();
-const setModal = (flag: boolean) => {
-  isModal.value = flag;
+const isModalEdit = ref<boolean>();
+const setModalEdit = (flag: boolean) => {
+  isModalEdit.value = flag;
+};
+
+const isModalDelete = ref<boolean>();
+const setModalDelete = (flag: boolean) => {
+  isModalDelete.value = flag;
 };
 </script>
 
@@ -48,17 +54,27 @@ const setModal = (flag: boolean) => {
         </div>
       </div>
       <div class="app-todo-item__btn-wrapper">
-        <app-button :disabled="isLoading" @click="deleteTodoWithLoading">
+        <app-button :disabled="isLoading" @click="setModalDelete(true)">
           удалить
         </app-button>
-        <app-button :disabled="isLoading" @click="setModal(true)">
+        <app-button :disabled="isLoading" @click="setModalEdit(true)">
           редактировать
         </app-button>
       </div>
     </div>
   </app-card>
 
-  <app-todo-modal :modal-state="isModal" @close-modal="setModal(false)" />
+  <app-modal-delete
+    v-if="isModalDelete"
+    @close-modal="setModalDelete(false)"
+    @confirm-delete="deleteTodoWithLoading"
+  />
+
+  <app-todo-modal
+    v-if="isModalEdit"
+    :modal-data="{ id, title, description, dueDate }"
+    @close-modal="setModalEdit(false)"
+  />
 </template>
 
 <style scoped lang="scss">

@@ -13,11 +13,13 @@ const { deleteTodo, updateTodo } = todoStore;
 <template>
   <div class="app-todo-list">
     <app-todo-item
-      v-for="{ id, title, completed, dueDate } in todoList"
+      v-for="{ id, title, completed, description, dueDate } in todoList"
       :key="id"
+      :id
       :title
       :completed
       :due-date
+      :description
       :update-completed="() => updateTodo(id, { completed: !completed })"
       :delete-todo="() => deleteTodo(id)"
     />

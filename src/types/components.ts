@@ -1,9 +1,13 @@
-export type TiAppTodoItem = {
-  title: string;
-  completed: boolean;
-  dueDate: string;
+import { TiTodo } from "./todo";
+
+export type TiAppTodoItem = Pick<
+  TiTodo,
+  "id" | "title" | "description" | "dueDate" | "completed"
+> & {
   updateCompleted: () => Promise<void>;
   deleteTodo: () => Promise<void>;
 };
 
-export type TiAppTodoModal = { modalState: boolean };
+export type TiAppTodoModal = {
+  modalData?: Pick<TiTodo, "id" | "title" | "description" | "dueDate">;
+};

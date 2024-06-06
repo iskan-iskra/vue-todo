@@ -4,16 +4,18 @@ import { toRefs } from "vue";
 
 const modelValue = defineModel<string>();
 
-const props = defineProps<Partial<TiAppInput>>();
+const props = withDefaults(defineProps<Partial<TiAppInput>>(), {
+  type: "text",
+});
 
-const { title, disabled, placeholder } = toRefs(props);
+const { title, disabled, placeholder, type } = toRefs(props);
 </script>
 
 <template>
   <div class="app-input">
     <div v-if="title" class="app-input__title">{{ title }}</div>
     <input
-      type="text"
+      :type
       v-model="modelValue"
       class="app-input__input"
       :placeholder

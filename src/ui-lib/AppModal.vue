@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { toRefs } from "vue";
-
 const emit = defineEmits(["click-outside"]);
-
-const props = withDefaults(defineProps<{ modalState: boolean }>(), {
-  modalState: false,
-});
-const { modalState } = toRefs(props);
 </script>
 
 <template>
   <Teleport to="body">
     <transition name="modal-fade">
-      <div
-        v-if="modalState"
-        class="app-modal__wrapper"
-        @click="emit('click-outside')"
-      >
+      <div class="app-modal__wrapper" @click="emit('click-outside')">
         <div class="app-modal__container" @click.stop>
           <div class="app-modal__header">
             <slot name="header"></slot>

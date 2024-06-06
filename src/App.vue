@@ -34,7 +34,7 @@ onMounted(() => {
   <main>
     <app-todo-list v-if="!isLoading" />
   </main>
-  <AppTodoModal :modal-state="isModal" @close-modal="setModal(false)" />
+  <AppTodoModal v-if="isModal" @close-modal="setModal(false)" />
 </template>
 
 <style scoped lang="scss">

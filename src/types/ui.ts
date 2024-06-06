@@ -14,6 +14,7 @@ export type TiAppInput = {
   title: string;
   disabled: boolean;
   placeholder: string;
+  type: "text" | "date";
 };
 
 export type TiAppCard = {
