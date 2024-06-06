@@ -22,6 +22,7 @@ export default defineStore("todo", (): IUseTodoStore => {
     try {
       storeTodoList.value = await todoService.getTodoList();
     } catch (error) {
+      alert("Ошибка получения списка задач");
       console.error("Failed to fetch todo list:", error);
     }
   };
@@ -31,6 +32,7 @@ export default defineStore("todo", (): IUseTodoStore => {
       const newTodo = await todoService.createTodo(params);
       storeTodoList.value.push(newTodo);
     } catch (error) {
+      alert("Ошибка создания задачи");
       console.error("Failed to create todo:", error);
     }
   };
@@ -48,6 +50,7 @@ export default defineStore("todo", (): IUseTodoStore => {
         console.warn("Todo not found for update:", reqId);
       }
     } catch (error) {
+      alert("Ошибка обновления задачи");
       console.error("Failed to update todo:", error);
     }
   };
@@ -59,6 +62,7 @@ export default defineStore("todo", (): IUseTodoStore => {
         (todo) => todo.id !== reqId
       );
     } catch (error) {
+      alert("Ошибка обновления удаления задачи");
       console.error("Failed to delete todo:", error);
     }
   };
